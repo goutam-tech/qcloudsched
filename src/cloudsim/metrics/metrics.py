@@ -6,18 +6,18 @@ throughput, utilization, energy, cost, and SLA violations.
 """
 
 from __future__ import annotations
+
 import csv
 import json
-import os
 import logging
-from dataclasses import dataclass, asdict
-from typing import List, Optional, TYPE_CHECKING
+import os
+from dataclasses import asdict, dataclass
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
-    from cloudsim.vms.vm import VM
-    from cloudsim.hosts.host import Host
     from cloudsim.datacenters.datacenter import Datacenter
+    from cloudsim.vms.vm import VM
 
 logger = logging.getLogger(__name__)
 
@@ -69,9 +69,9 @@ class MetricsCollector:
 
     def compute(
         self,
-        cloudlets: List["Cloudlet"],
-        vms: List["VM"],
-        datacenter: Optional["Datacenter"] = None,
+        cloudlets: list[Cloudlet],
+        vms: list[VM],
+        datacenter: Datacenter | None = None,
         sim_end_time: float = 0.0,
     ) -> SimulationMetrics:
         """
@@ -115,7 +115,7 @@ class MetricsCollector:
         if vm_loads and len(vm_loads) > 1:
             mean_load = sum(vm_loads) / len(vm_loads)
             variance = sum((x - mean_load) ** 2 for x in vm_loads) / len(vm_loads)
-            std_dev = variance ** 0.5
+            std_dev = variance**0.5
             lbi = std_dev / mean_load if mean_load > 0 else 0.0
         else:
             lbi = 0.0
@@ -155,7 +155,7 @@ class MetricsCollector:
     def export_csv(
         self,
         metrics: SimulationMetrics,
-        cloudlets: List["Cloudlet"],
+        cloudlets: list[Cloudlet],
         path: str,
     ) -> None:
         """
@@ -172,19 +172,41 @@ class MetricsCollector:
         cl_path = os.path.join(path, "cloudlets.csv")
         with open(cl_path, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "id", "state", "vm_id", "length", "pes",
-                "arrival", "submit", "start", "finish",
-                "exec_time", "wait_time", "response_time", "sla_violated",
-            ])
+            writer.writerow(
+                [
+                    "id",
+                    "state",
+                    "vm_id",
+                    "length",
+                    "pes",
+                    "arrival",
+                    "submit",
+                    "start",
+                    "finish",
+                    "exec_time",
+                    "wait_time",
+                    "response_time",
+                    "sla_violated",
+                ]
+            )
             for cl in cloudlets:
-                writer.writerow([
-                    cl.cloudlet_id, cl.state, cl.assigned_vm_id,
-                    cl.length, cl.pes,
-                    cl.arrival_time, cl.submit_time, cl.start_time, cl.finish_time,
-                    cl.execution_time, cl.waiting_time, cl.response_time,
-                    cl.sla_violated,
-                ])
+                writer.writerow(
+                    [
+                        cl.cloudlet_id,
+                        cl.state,
+                        cl.assigned_vm_id,
+                        cl.length,
+                        cl.pes,
+                        cl.arrival_time,
+                        cl.submit_time,
+                        cl.start_time,
+                        cl.finish_time,
+                        cl.execution_time,
+                        cl.waiting_time,
+                        cl.response_time,
+                        cl.sla_violated,
+                    ]
+                )
         logger.info("Cloudlet results exported → %s", cl_path)
 
         # Summary metrics CSV
@@ -200,7 +222,7 @@ class MetricsCollector:
     def export_json(
         self,
         metrics: SimulationMetrics,
-        cloudlets: List["Cloudlet"],
+        cloudlets: list[Cloudlet],
         path: str,
     ) -> None:
         """
@@ -244,8 +266,8 @@ class MetricsCollector:
     def generate_plots(
         self,
         metrics: SimulationMetrics,
-        cloudlets: List["Cloudlet"],
-        vms: List["VM"],
+        cloudlets: list[Cloudlet],
+        vms: list[VM],
         path: str,
     ) -> None:
         """
@@ -259,6 +281,7 @@ class MetricsCollector:
         """
         try:
             import matplotlib
+
             matplotlib.use("Agg")
             import matplotlib.pyplot as plt
         except ImportError:
@@ -267,12 +290,18 @@ class MetricsCollector:
 
         os.makedirs(path, exist_ok=True)
         from cloudsim.core.constants import CloudletState
+
         completed = [cl for cl in cloudlets if cl.state == CloudletState.SUCCESS]
 
         # --- Execution time histogram ---
         if completed:
             fig, ax = plt.subplots(figsize=(8, 4))
-            ax.hist([cl.execution_time for cl in completed], bins=20, color="steelblue", edgecolor="white")
+            ax.hist(
+                [cl.execution_time for cl in completed],
+                bins=20,
+                color="steelblue",
+                edgecolor="white",
+            )
             ax.set_xlabel("Execution Time (s)")
             ax.set_ylabel("Frequency")
             ax.set_title("Cloudlet Execution Time Distribution")

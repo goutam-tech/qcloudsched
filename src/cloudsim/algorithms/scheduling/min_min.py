@@ -12,10 +12,11 @@ and performs well when cloudlet lengths vary.
 """
 
 from __future__ import annotations
-from typing import List, Optional, TYPE_CHECKING
 
-from cloudsim.schedulers.schedulers import CloudletScheduler
+from typing import TYPE_CHECKING
+
 from cloudsim.core.constants import CloudletState
+from cloudsim.schedulers.schedulers import CloudletScheduler
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -47,9 +48,9 @@ class MinMinScheduler(CloudletScheduler):
 
     def __init__(self) -> None:
         """Initialize the Min-Min scheduler."""
-        self._cloudlets: List["Cloudlet"] = []
+        self._cloudlets: list[Cloudlet] = []
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         """
         Assign cloudlets using the Min-Min scheduling algorithm.
 
@@ -69,14 +70,12 @@ class MinMinScheduler(CloudletScheduler):
         unscheduled = list(cloudlets)
 
         while unscheduled:
-
             best_cloudlet = None
             best_vm = None
             best_completion = float("inf")
 
             # Find the minimum completion time for every cloudlet
             for cloudlet in unscheduled:
-
                 min_vm = None
                 min_completion = float("inf")
 
@@ -106,7 +105,7 @@ class MinMinScheduler(CloudletScheduler):
 
             unscheduled.remove(best_cloudlet)
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         """Return the next queued or executing cloudlet."""
         for cl in self._cloudlets:
             if cl.state in (CloudletState.QUEUED, CloudletState.INEXEC):

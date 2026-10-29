@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections import deque
-from typing import Deque, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -20,38 +20,33 @@ class CloudletScheduler(ABC):
     """Abstract base class for cloudlet-to-VM scheduling policies."""
 
     @abstractmethod
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
-        ...
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None: ...
 
     @abstractmethod
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
-        ...
+    def get_next_cloudlet(self) -> Cloudlet | None: ...
 
     @abstractmethod
-    def is_finished(self) -> bool:
-        ...
+    def is_finished(self) -> bool: ...
 
 
 class VMScheduler(ABC):
     """Abstract base class for VM scheduling policies on a host."""
 
     @abstractmethod
-    def allocate_pes_for_vm(self, vm: "VM", mips_share: List[float]) -> bool:
-        ...
+    def allocate_pes_for_vm(self, vm: VM, mips_share: list[float]) -> bool: ...
 
     @abstractmethod
-    def deallocate_pes_for_vm(self, vm: "VM") -> None:
-        ...
+    def deallocate_pes_for_vm(self, vm: VM) -> None: ...
 
 
 class TimeSharedScheduler(CloudletScheduler):
     """Time-shared policy: concurrent cloudlets on a VM split MIPS evenly."""
 
     def __init__(self) -> None:
-        self._cloudlets: List["Cloudlet"] = []
-        self._vm_cloudlet_map: Dict[int, List["Cloudlet"]] = {}
+        self._cloudlets: list[Cloudlet] = []
+        self._vm_cloudlet_map: dict[int, list[Cloudlet]] = {}
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         from cloudsim.core.constants import CloudletState
 
         if not vms:
@@ -68,7 +63,7 @@ class TimeSharedScheduler(CloudletScheduler):
 
         self._update_vm_shares(vms)
 
-    def _update_vm_shares(self, vms: List["VM"]) -> None:
+    def _update_vm_shares(self, vms: list[VM]) -> None:
         for vm in vms:
             running = self._vm_cloudlet_map.get(vm.vm_id, [])
             if not running:
@@ -80,7 +75,7 @@ class TimeSharedScheduler(CloudletScheduler):
                 cloudlet.current_mips = share
             vm.update_used_mips()
 
-    def complete_cloudlet(self, cloudlet: "Cloudlet", vms: List["VM"]) -> None:
+    def complete_cloudlet(self, cloudlet: Cloudlet, vms: list[VM]) -> None:
         from cloudsim.core.constants import CloudletState
 
         cloudlet.state = CloudletState.SUCCESS
@@ -94,7 +89,7 @@ class TimeSharedScheduler(CloudletScheduler):
             running.remove(cloudlet)
         self._update_vm_shares(vms)
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         from cloudsim.core.constants import CloudletState
 
         for cloudlet in self._cloudlets:
@@ -102,7 +97,7 @@ class TimeSharedScheduler(CloudletScheduler):
                 return cloudlet
         return None
 
-    def estimate_finish_time(self, cloudlet: "Cloudlet", vm: "VM") -> float:
+    def estimate_finish_time(self, cloudlet: Cloudlet, vm: VM) -> float:
         concurrent = max(1, len(self._vm_cloudlet_map.get(vm.vm_id, [cloudlet])))
         effective_mips = vm.total_mips / concurrent
         return cloudlet.arrival_time + cloudlet.length / effective_mips
@@ -117,12 +112,12 @@ class SpaceSharedScheduler(CloudletScheduler):
     """Space-shared policy: one cloudlet per VM at a time with a waiting queue."""
 
     def __init__(self) -> None:
-        self._waiting_queue: Deque["Cloudlet"] = deque()
-        self._running: List["Cloudlet"] = []
-        self._completed: List["Cloudlet"] = []
-        self._vm_busy: Dict[int, bool] = {}
+        self._waiting_queue: deque[Cloudlet] = deque()
+        self._running: list[Cloudlet] = []
+        self._completed: list[Cloudlet] = []
+        self._vm_busy: dict[int, bool] = {}
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         from cloudsim.core.constants import CloudletState
 
         for vm in vms:
@@ -144,7 +139,7 @@ class SpaceSharedScheduler(CloudletScheduler):
                 self._vm_busy[vm.vm_id] = True
                 vm.cloudlets.append(cloudlet)
 
-    def complete_cloudlet(self, cloudlet: "Cloudlet", vms: List["VM"]) -> None:
+    def complete_cloudlet(self, cloudlet: Cloudlet, vms: list[VM]) -> None:
         from cloudsim.core.constants import CloudletState
 
         cloudlet.state = CloudletState.SUCCESS
@@ -171,7 +166,7 @@ class SpaceSharedScheduler(CloudletScheduler):
             self._vm_busy[vm.vm_id] = True
             vm.cloudlets.append(next_cloudlet)
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         return self._running[0] if self._running else None
 
     def is_finished(self) -> bool:

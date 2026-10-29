@@ -1,17 +1,15 @@
 from __future__ import annotations
 
 import json
-from typing import List
 
 from cloudsim.vms.vm import VM
 
 
 class VMLoader:
-
     @staticmethod
-    def load(path: str) -> List[VM]:
+    def load(path: str) -> list[VM]:
 
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
 
         vms = []
@@ -25,7 +23,7 @@ class VMLoader:
                     pes=item["pes"],
                     ram=item["ram"],
                     bandwidth=item["bandwidth"],
-                    storage=item["storage"]
+                    storage=item["storage"],
                 )
             )
 

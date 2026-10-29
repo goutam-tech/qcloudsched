@@ -40,9 +40,7 @@ class SimulationClock:
             ValueError: If time is in the past.
         """
         if time < self._time:
-            raise ValueError(
-                f"Cannot move clock backwards: current={self._time}, requested={time}"
-            )
+            raise ValueError(f"Cannot move clock backwards: current={self._time}, requested={time}")
         self._time = time
 
     def reset(self) -> None:

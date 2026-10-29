@@ -10,7 +10,6 @@ from statistics import mean
 
 
 class UtilizationCollector:
-
     def __init__(self) -> None:
 
         self.vm_samples = []
@@ -21,11 +20,7 @@ class UtilizationCollector:
     # Snapshot Recording
     # ---------------------------------------------------------
 
-    def record_vm_snapshot(
-        self,
-        timestamp: float,
-        vm
-    ) -> None:
+    def record_vm_snapshot(self, timestamp: float, vm) -> None:
 
         self.vm_samples.append(
             {
@@ -38,11 +33,7 @@ class UtilizationCollector:
             }
         )
 
-    def record_host_snapshot(
-        self,
-        timestamp: float,
-        host
-    ) -> None:
+    def record_host_snapshot(self, timestamp: float, host) -> None:
 
         self.host_samples.append(
             {
@@ -64,40 +55,28 @@ class UtilizationCollector:
         if not self.vm_samples:
             return 0.0
 
-        return mean(
-            sample["cpu_load"]
-            for sample in self.vm_samples
-        )
+        return mean(sample["cpu_load"] for sample in self.vm_samples)
 
     def average_vm_ram_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return mean(
-            sample["ram_load"]
-            for sample in self.vm_samples
-        )
+        return mean(sample["ram_load"] for sample in self.vm_samples)
 
     def average_vm_storage_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return mean(
-            sample["storage_load"]
-            for sample in self.vm_samples
-        )
+        return mean(sample["storage_load"] for sample in self.vm_samples)
 
     def average_vm_bandwidth_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return mean(
-            sample["bandwidth_load"]
-            for sample in self.vm_samples
-        )
+        return mean(sample["bandwidth_load"] for sample in self.vm_samples)
 
     # ---------------------------------------------------------
     # Host Averages
@@ -108,40 +87,28 @@ class UtilizationCollector:
         if not self.host_samples:
             return 0.0
 
-        return mean(
-            sample["cpu_load"]
-            for sample in self.host_samples
-        )
+        return mean(sample["cpu_load"] for sample in self.host_samples)
 
     def average_host_ram_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return mean(
-            sample["ram_load"]
-            for sample in self.host_samples
-        )
+        return mean(sample["ram_load"] for sample in self.host_samples)
 
     def average_host_storage_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return mean(
-            sample["storage_load"]
-            for sample in self.host_samples
-        )
+        return mean(sample["storage_load"] for sample in self.host_samples)
 
     def average_host_bandwidth_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return mean(
-            sample["bandwidth_load"]
-            for sample in self.host_samples
-        )
+        return mean(sample["bandwidth_load"] for sample in self.host_samples)
 
     # ---------------------------------------------------------
     # Peak VM Utilization
@@ -152,40 +119,28 @@ class UtilizationCollector:
         if not self.vm_samples:
             return 0.0
 
-        return max(
-            sample["cpu_load"]
-            for sample in self.vm_samples
-        )
+        return max(sample["cpu_load"] for sample in self.vm_samples)
 
     def peak_vm_ram_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return max(
-            sample["ram_load"]
-            for sample in self.vm_samples
-        )
+        return max(sample["ram_load"] for sample in self.vm_samples)
 
     def peak_vm_storage_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return max(
-            sample["storage_load"]
-            for sample in self.vm_samples
-        )
+        return max(sample["storage_load"] for sample in self.vm_samples)
 
     def peak_vm_bandwidth_utilization(self) -> float:
 
         if not self.vm_samples:
             return 0.0
 
-        return max(
-            sample["bandwidth_load"]
-            for sample in self.vm_samples
-        )
+        return max(sample["bandwidth_load"] for sample in self.vm_samples)
 
     # ---------------------------------------------------------
     # Peak Host Utilization
@@ -196,40 +151,28 @@ class UtilizationCollector:
         if not self.host_samples:
             return 0.0
 
-        return max(
-            sample["cpu_load"]
-            for sample in self.host_samples
-        )
+        return max(sample["cpu_load"] for sample in self.host_samples)
 
     def peak_host_ram_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return max(
-            sample["ram_load"]
-            for sample in self.host_samples
-        )
+        return max(sample["ram_load"] for sample in self.host_samples)
 
     def peak_host_storage_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return max(
-            sample["storage_load"]
-            for sample in self.host_samples
-        )
+        return max(sample["storage_load"] for sample in self.host_samples)
 
     def peak_host_bandwidth_utilization(self) -> float:
 
         if not self.host_samples:
             return 0.0
 
-        return max(
-            sample["bandwidth_load"]
-            for sample in self.host_samples
-        )
+        return max(sample["bandwidth_load"] for sample in self.host_samples)
 
     # ---------------------------------------------------------
     # Export Helpers

@@ -5,7 +5,7 @@ PyCloudSim Virtual Machine Module.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from cloudsim.core.constants import VMState
 
@@ -27,9 +27,9 @@ class VM:
     broker_id: int = -1
 
     state: str = field(default=VMState.CREATED, init=False)
-    host: Optional["Host"] = field(default=None, init=False)
-    cloudlets: List["Cloudlet"] = field(default_factory=list, init=False)
-    running_cloudlets: List["Cloudlet"] = field(default_factory=list, init=False)
+    host: Host | None = field(default=None, init=False)
+    cloudlets: list[Cloudlet] = field(default_factory=list, init=False)
+    running_cloudlets: list[Cloudlet] = field(default_factory=list, init=False)
 
     start_time: float = field(default=0.0, init=False)
     finish_time: float = field(default=0.0, init=False)
@@ -39,10 +39,10 @@ class VM:
     used_storage: int = field(default=0, init=False)
     used_bandwidth: int = field(default=0, init=False)
 
-    cpu_samples: List[float] = field(default_factory=list, init=False)
-    ram_samples: List[float] = field(default_factory=list, init=False)
-    storage_samples: List[float] = field(default_factory=list, init=False)
-    bandwidth_samples: List[float] = field(default_factory=list, init=False)
+    cpu_samples: list[float] = field(default_factory=list, init=False)
+    ram_samples: list[float] = field(default_factory=list, init=False)
+    storage_samples: list[float] = field(default_factory=list, init=False)
+    bandwidth_samples: list[float] = field(default_factory=list, init=False)
 
     @property
     def total_mips(self) -> float:
@@ -72,7 +72,7 @@ class VM:
             return 0.0
         return min(1.0, self.used_bandwidth / self.bandwidth)
 
-    def assign_cloudlet(self, cloudlet: "Cloudlet") -> None:
+    def assign_cloudlet(self, cloudlet: Cloudlet) -> None:
         ram_req = getattr(cloudlet, "ram_required", 512)
         storage_req = getattr(cloudlet, "storage_required", 100)
         bw_req = getattr(cloudlet, "bandwidth_required", 100)
@@ -90,7 +90,7 @@ class VM:
         self.used_bandwidth += bw_req
         self.update_used_mips()
 
-    def complete_cloudlet(self, cloudlet: "Cloudlet") -> None:
+    def complete_cloudlet(self, cloudlet: Cloudlet) -> None:
         if cloudlet not in self.running_cloudlets:
             return
 
@@ -106,9 +106,7 @@ class VM:
         self.update_used_mips()
 
     def update_used_mips(self) -> None:
-        self.used_mips = sum(
-            getattr(cl, "current_mips", 0.0) for cl in self.running_cloudlets
-        )
+        self.used_mips = sum(getattr(cl, "current_mips", 0.0) for cl in self.running_cloudlets)
 
     def record_utilization_sample(self) -> None:
         self.cpu_samples.append(self.cpu_load)

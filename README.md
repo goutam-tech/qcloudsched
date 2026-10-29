@@ -68,6 +68,7 @@ sim = CloudSimulation.from_files(
 
 # Run and collect metrics
 import time
+
 wall_start = time.perf_counter()
 metrics = sim.run()
 wall_elapsed = time.perf_counter() - wall_start
@@ -164,6 +165,7 @@ pycloudsim/
 
 ```python
 from cloudsim.schedulers import CloudletScheduler
+
 
 class PriorityScheduler(CloudletScheduler):
     def submit_cloudlets(self, cloudlets, vms):

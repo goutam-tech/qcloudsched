@@ -8,7 +8,7 @@ violations.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, List
+from typing import TYPE_CHECKING
 
 from cloudsim.algorithms.scheduling.qa.utils import get_qubit_index
 
@@ -21,7 +21,7 @@ def decode_bitstring(
     bitstring: str,
     num_cloudlets: int,
     num_vms: int,
-) -> Dict[int, List[int]]:
+) -> dict[int, list[int]]:
     """
     Decode a raw binary bitstring into a tentative VM assignment list per cloudlet.
 
@@ -36,7 +36,7 @@ def decode_bitstring(
     Returns:
         A dictionary mapping cloudlet index to a list of VM indices assigned to it.
     """
-    assignment: Dict[int, List[int]] = {i: [] for i in range(num_cloudlets)}
+    assignment: dict[int, list[int]] = {i: [] for i in range(num_cloudlets)}
 
     for i in range(num_cloudlets):
         for j in range(num_vms):
@@ -50,10 +50,10 @@ def decode_bitstring(
 
 
 def repair_assignment(
-    decoded_assignment: Dict[int, List[int]],
-    cloudlets: List["Cloudlet"],
-    vms: List["VM"],
-) -> Dict[int, int]:
+    decoded_assignment: dict[int, list[int]],
+    cloudlets: list[Cloudlet],
+    vms: list[VM],
+) -> dict[int, int]:
     """
     Repair conflicts or empty assignments in a tentative mapping.
 
@@ -68,13 +68,11 @@ def repair_assignment(
     Returns:
         A mapping of cloudlet index to a single assigned VM index.
     """
-    final_assignment: Dict[int, int] = {}
+    final_assignment: dict[int, int] = {}
     vm_loads = [0.0] * len(vms)
 
     for j, vm in enumerate(vms):
-        vm_loads[j] = sum(
-            c.length / vm.total_mips for c in vm.cloudlets if vm.total_mips > 0.0
-        )
+        vm_loads[j] = sum(c.length / vm.total_mips for c in vm.cloudlets if vm.total_mips > 0.0)
 
     for i, cl in enumerate(cloudlets):
         candidates = decoded_assignment.get(i, [])
@@ -84,7 +82,7 @@ def repair_assignment(
         storage_req = getattr(cl, "storage_required", 100)
         bw_req = getattr(cl, "bandwidth_required", 100)
 
-        for j in (candidates if candidates else range(len(vms))):
+        for j in candidates if candidates else range(len(vms)):
             vm = vms[j]
             used_ram = sum(getattr(c, "ram_required", 512) for c in vm.cloudlets)
             used_storage = sum(getattr(c, "storage_required", 100) for c in vm.cloudlets)

@@ -7,7 +7,7 @@ and calculating scheduling-specific cost metrics.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Dict, Any
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -44,10 +44,10 @@ def get_cloudlet_vm_indices(qubit_idx: int, num_vms: int) -> tuple[int, int]:
 
 
 def compute_schedule_metrics(
-    assignment: Dict[int, int],
-    cloudlets: List["Cloudlet"],
-    vms: List["VM"],
-) -> Dict[str, float]:
+    assignment: dict[int, int],
+    cloudlets: list[Cloudlet],
+    vms: list[VM],
+) -> dict[str, float]:
     """
     Compute scheduling performance metrics for a given assignment mapping.
 
@@ -66,7 +66,7 @@ def compute_schedule_metrics(
         return {"makespan": 0.0, "avg_waiting_time": 0.0, "load_balance_index": 0.0}
 
     vm_times = [0.0] * len(vms)
-    vm_cloudlets: Dict[int, List["Cloudlet"]] = {j: [] for j in range(len(vms))}
+    vm_cloudlets: dict[int, list[Cloudlet]] = {j: [] for j in range(len(vms))}
 
     # Group cloudlets by VM
     for cl_idx, vm_idx in assignment.items():
@@ -97,7 +97,7 @@ def compute_schedule_metrics(
     # Load Balance Index (SD or variance of VM times)
     mean_time = sum(vm_times) / len(vms)
     variance = sum((t - mean_time) ** 2 for t in vm_times) / len(vms)
-    load_balance_index = variance ** 0.5
+    load_balance_index = variance**0.5
 
     return {
         "makespan": makespan,

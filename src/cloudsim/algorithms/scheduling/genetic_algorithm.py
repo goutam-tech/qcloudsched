@@ -10,10 +10,10 @@ to minimize the overall makespan.
 from __future__ import annotations
 
 import random
-from typing import List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
-from cloudsim.schedulers.schedulers import CloudletScheduler
 from cloudsim.core.constants import CloudletState
+from cloudsim.schedulers.schedulers import CloudletScheduler
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -49,9 +49,9 @@ class GAScheduler(CloudletScheduler):
         self.mutation_rate = mutation_rate
 
         self.random = random.Random(seed)
-        self._cloudlets: List["Cloudlet"] = []
+        self._cloudlets: list[Cloudlet] = []
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         """
         Schedule cloudlets using a Genetic Algorithm.
 
@@ -73,10 +73,7 @@ class GAScheduler(CloudletScheduler):
         # -------------------------------------------------------
 
         population = [
-            [
-                self.random.randrange(len(vms))
-                for _ in range(chromosome_length)
-            ]
+            [self.random.randrange(len(vms)) for _ in range(chromosome_length)]
             for _ in range(self.population_size)
         ]
 
@@ -88,7 +85,7 @@ class GAScheduler(CloudletScheduler):
 
             vm_times = [0.0] * len(vms)
 
-            for gene, cloudlet in zip(chromosome, cloudlets):
+            for gene, cloudlet in zip(chromosome, cloudlets, strict=False):
                 vm = vms[gene]
                 vm_times[gene] += cloudlet.length / vm.mips
 
@@ -128,7 +125,6 @@ class GAScheduler(CloudletScheduler):
         def mutate(chromosome):
 
             for i in range(chromosome_length):
-
                 if self.random.random() < self.mutation_rate:
                     chromosome[i] = self.random.randrange(len(vms))
 
@@ -137,11 +133,9 @@ class GAScheduler(CloudletScheduler):
         # -------------------------------------------------------
 
         for _ in range(self.generations):
-
             new_population = []
 
             while len(new_population) < self.population_size:
-
                 parent1 = selection()
                 parent2 = selection()
 
@@ -167,8 +161,7 @@ class GAScheduler(CloudletScheduler):
         # Assign cloudlets
         # -------------------------------------------------------
 
-        for cloudlet, vm_index in zip(cloudlets, best):
-
+        for cloudlet, vm_index in zip(cloudlets, best, strict=False):
             vm = vms[vm_index]
 
             cloudlet.assigned_vm_id = vm.vm_id
@@ -177,7 +170,7 @@ class GAScheduler(CloudletScheduler):
             vm.cloudlets.append(cloudlet)
             self._cloudlets.append(cloudlet)
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         """Return the next queued or executing cloudlet."""
 
         for cl in self._cloudlets:
@@ -192,10 +185,7 @@ class GAScheduler(CloudletScheduler):
     def is_finished(self) -> bool:
         """Return True when all submitted cloudlets have completed."""
 
-        return all(
-            cl.state == CloudletState.SUCCESS
-            for cl in self._cloudlets
-        )
+        return all(cl.state == CloudletState.SUCCESS for cl in self._cloudlets)
 
     def reset(self) -> None:
         """Reset scheduler state."""

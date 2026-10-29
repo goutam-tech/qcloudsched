@@ -1,17 +1,15 @@
 from __future__ import annotations
 
 import json
-from typing import List
 
 from cloudsim.cloudlets.cloudlet import Cloudlet
 
 
 class TaskLoader:
-
     @staticmethod
-    def load(path: str) -> List[Cloudlet]:
+    def load(path: str) -> list[Cloudlet]:
 
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
 
         cloudlets = []
@@ -26,7 +24,7 @@ class TaskLoader:
                     output_size=item["output_size"],
                     arrival_time=item.get("arrival_time", 0.0),
                     priority=item.get("priority", 0),
-                    deadline=item.get("deadline")
+                    deadline=item.get("deadline"),
                 )
             )
 

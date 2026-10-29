@@ -55,7 +55,8 @@ classifiers = [
 
 dependencies = [
     "rich>=13.0",
-    "matplotlib>=3.8"
+    "matplotlib>=3.8",
+    "ruff>=0.17.3",
 ]
 
 

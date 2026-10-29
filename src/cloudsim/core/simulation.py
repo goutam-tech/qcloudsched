@@ -7,7 +7,6 @@ Orchestrates the discrete-event simulation loop and drives the global clock.
 from __future__ import annotations
 
 import logging
-from typing import Dict, List, Optional
 
 from cloudsim.core.clock import SimulationClock
 from cloudsim.core.entity import SimEntity
@@ -24,7 +23,7 @@ class Simulation:
     def __init__(self, termination_time: float = float("inf")) -> None:
         self.clock: SimulationClock = SimulationClock()
         self._event_queue: EventQueue = EventQueue()
-        self._entities: Dict[int, SimEntity] = {}
+        self._entities: dict[int, SimEntity] = {}
         self._next_entity_id: int = 0
         self.termination_time: float = termination_time
         self._running: bool = False
@@ -40,10 +39,10 @@ class Simulation:
         logger.debug("Registered entity %r with id=%d", entity.name, entity_id)
         return entity_id
 
-    def get_entity(self, entity_id: int) -> Optional[SimEntity]:
+    def get_entity(self, entity_id: int) -> SimEntity | None:
         return self._entities.get(entity_id)
 
-    def get_entities(self) -> List[SimEntity]:
+    def get_entities(self) -> list[SimEntity]:
         return list(self._entities.values())
 
     def schedule(self, event: Event) -> None:
@@ -59,9 +58,9 @@ class Simulation:
     def schedule_now(
         self,
         event_type: str,
-        source: Optional[SimEntity],
-        destination: Optional[SimEntity],
-        data: Optional[object] = None,
+        source: SimEntity | None,
+        destination: SimEntity | None,
+        data: object | None = None,
     ) -> None:
         self.schedule(
             Event(

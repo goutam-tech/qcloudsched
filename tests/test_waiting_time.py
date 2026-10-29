@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
 from cloudsim.cloudlets.cloudlet import Cloudlet
 from cloudsim.cloudlets.task_loader import TaskLoader
 from cloudsim.core.constants import DEFAULT_SCHEDULING_INTERVAL
@@ -14,7 +15,6 @@ from cloudsim.datacenters.datacenter import Datacenter
 from cloudsim.hosts.host_loader import HostLoader
 from cloudsim.metrics.metrics import MetricsCollector
 from cloudsim.vms.vm_loader import VMLoader
-from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
 
 
 def _run_simulation(cloudlet_path: str) -> tuple[list[Cloudlet], object]:

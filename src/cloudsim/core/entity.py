@@ -5,12 +5,13 @@ Defines the abstract base class for all simulation entities.
 """
 
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from cloudsim.core.simulation import Simulation
     from cloudsim.core.event import Event
+    from cloudsim.core.simulation import Simulation
 
 
 class SimEntity(ABC):
@@ -34,9 +35,9 @@ class SimEntity(ABC):
         """
         self.name: str = name
         self.entity_id: int = -1
-        self._simulation: "Simulation | None" = None
+        self._simulation: Simulation | None = None
 
-    def set_simulation(self, simulation: "Simulation") -> None:
+    def set_simulation(self, simulation: Simulation) -> None:
         """
         Bind this entity to a running simulation.
 
@@ -46,7 +47,7 @@ class SimEntity(ABC):
         self._simulation = simulation
 
     @abstractmethod
-    def process_event(self, event: "Event") -> None:
+    def process_event(self, event: Event) -> None:
         """
         Handle an incoming simulation event.
 
@@ -55,10 +56,12 @@ class SimEntity(ABC):
         """
         ...
 
+    @abstractmethod
     def start_entity(self) -> None:
         """Called when the simulation starts. Override to send initial events."""
         pass
 
+    @abstractmethod
     def shutdown_entity(self) -> None:
         """Called when the simulation ends. Override for cleanup logic."""
         pass

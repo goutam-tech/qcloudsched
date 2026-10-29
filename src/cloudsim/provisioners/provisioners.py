@@ -6,8 +6,8 @@ allocation on a Host for VMs.
 """
 
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
-from typing import Dict, Optional
 
 
 class ResourceProvisioner(ABC):
@@ -23,7 +23,7 @@ class ResourceProvisioner(ABC):
 
     def __init__(self, capacity: float) -> None:
         self._capacity: float = capacity
-        self._allocated: Dict[int, float] = {}  # vm_id -> allocated amount
+        self._allocated: dict[int, float] = {}  # vm_id -> allocated amount
 
     @property
     def capacity(self) -> float:

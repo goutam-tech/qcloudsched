@@ -5,8 +5,8 @@ Implements a priority queue for simulation events using Python's heapq.
 """
 
 from __future__ import annotations
+
 import heapq
-from typing import List, Optional
 
 from cloudsim.core.event import Event
 
@@ -27,7 +27,7 @@ class EventQueue:
 
     def __init__(self) -> None:
         """Initialize an empty event queue."""
-        self._heap: List[Event] = []
+        self._heap: list[Event] = []
 
     def push(self, event: Event) -> None:
         """
@@ -50,7 +50,7 @@ class EventQueue:
         """
         return heapq.heappop(self._heap)
 
-    def peek(self) -> Optional[Event]:
+    def peek(self) -> Event | None:
         """
         Return the earliest event without removing it.
 

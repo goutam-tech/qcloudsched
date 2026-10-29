@@ -8,7 +8,8 @@ represented by a Qiskit SparsePauliOp.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Dict, Tuple
+from typing import TYPE_CHECKING
+
 from qiskit.quantum_info import SparsePauliOp
 
 from cloudsim.algorithms.scheduling.qa.utils import get_qubit_index
@@ -19,8 +20,8 @@ if TYPE_CHECKING:
 
 
 def build_hamiltonian(
-    cloudlets: List["Cloudlet"],
-    vms: List["VM"],
+    cloudlets: list[Cloudlet],
+    vms: list[VM],
     alpha: float = 0.5,
     beta: float = 0.5,
     lambda_assign: float = 100.0,
@@ -47,7 +48,7 @@ def build_hamiltonian(
     q = n * m
 
     linear = [0.0] * q
-    quadratic: Dict[Tuple[int, int], float] = {}
+    quadratic: dict[tuple[int, int], float] = {}
 
     # ------------------------------------------------------------------
     # 1. Assignment Constraints
@@ -69,9 +70,7 @@ def build_hamiltonian(
 
     for j, vm in enumerate(vms):
         p_j = vm.total_mips if vm.total_mips > 0.0 else 1.0
-        preload_len = sum(
-            c.length for c in vm.cloudlets if c.cloudlet_id not in current_batch_ids
-        )
+        preload_len = sum(c.length for c in vm.cloudlets if c.cloudlet_id not in current_batch_ids)
         preloads[j] = preload_len / p_j
 
     s_pre = sum(preloads)
@@ -86,14 +85,14 @@ def build_hamiltonian(
             l_i = cl.length
             p = get_qubit_index(i, j, m)
 
-            linear[p] += factor1 * (2.0 * preload_j * l_i / p_j + (l_i ** 2) / (p_j ** 2))
+            linear[p] += factor1 * (2.0 * preload_j * l_i / p_j + (l_i**2) / (p_j**2))
 
             for k in range(i + 1, n):
                 cl_k = cloudlets[k]
                 l_k = cl_k.length
                 r = get_qubit_index(k, j, m)
 
-                quad_val = factor1 * (2.0 * l_i * l_k / (p_j ** 2))
+                quad_val = factor1 * (2.0 * l_i * l_k / (p_j**2))
                 quadratic[(p, r)] = quadratic.get((p, r), 0.0) + quad_val
 
     factor2 = -beta / m
@@ -106,15 +105,15 @@ def build_hamiltonian(
             p_j = vm_j.total_mips if vm_j.total_mips > 0.0 else 1.0
             p = get_qubit_index(i, j, m)
 
-            linear[p] += factor2 * (2.0 * s_pre * l_i / p_j + (l_i ** 2) / (p_j ** 2))
+            linear[p] += factor2 * (2.0 * s_pre * l_i / p_j + (l_i**2) / (p_j**2))
 
             for k in range(n):
                 cl_k = cloudlets[k]
                 l_k = cl_k.length
-                for l in range(m):
-                    vm_l = vms[l]
+                for vms_idx in range(m):
+                    vm_l = vms[vms_idx]
                     p_l = vm_l.total_mips if vm_l.total_mips > 0.0 else 1.0
-                    r = get_qubit_index(k, l, m)
+                    r = get_qubit_index(k, vms_idx, m)
 
                     if p < r:
                         quad_val = factor2 * (2.0 * l_i * l_k / (p_j * p_l))
@@ -169,11 +168,7 @@ def build_hamiltonian(
             bw_req = getattr(cl, "bandwidth_required", 100)
             p = get_qubit_index(i, j, m)
 
-            if (
-                ram_req > avail_ram
-                or storage_req > avail_storage
-                or bw_req > avail_bandwidth
-            ):
+            if ram_req > avail_ram or storage_req > avail_storage or bw_req > avail_bandwidth:
                 linear[p] += lambda_invalid
 
             for k in range(i + 1, n):
@@ -183,9 +178,9 @@ def build_hamiltonian(
                 bw_req_k = getattr(cl_k, "bandwidth_required", 100)
                 r = get_qubit_index(k, j, m)
 
-                ram_penalty = lambda_cap * (ram_req * ram_req_k) / (avail_ram ** 2)
-                storage_penalty = lambda_cap * (storage_req * storage_req_k) / (avail_storage ** 2)
-                bw_penalty = lambda_cap * (bw_req * bw_req_k) / (avail_bandwidth ** 2)
+                ram_penalty = lambda_cap * (ram_req * ram_req_k) / (avail_ram**2)
+                storage_penalty = lambda_cap * (storage_req * storage_req_k) / (avail_storage**2)
+                bw_penalty = lambda_cap * (bw_req * bw_req_k) / (avail_bandwidth**2)
 
                 quadratic[(p, r)] = (
                     quadratic.get((p, r), 0.0) + ram_penalty + storage_penalty + bw_penalty
@@ -196,7 +191,7 @@ def build_hamiltonian(
     # ------------------------------------------------------------------
     offset = 0.0
     z_coeffs = [0.0] * q
-    zz_coeffs: Dict[Tuple[int, int], float] = {}
+    zz_coeffs: dict[tuple[int, int], float] = {}
 
     for p in range(q):
         val = linear[p]

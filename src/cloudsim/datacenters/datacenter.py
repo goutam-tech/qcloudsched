@@ -9,17 +9,17 @@ from __future__ import annotations
 
 import logging
 from collections import deque
-from typing import Deque, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
+from cloudsim.core.constants import CloudletState, EventType
 from cloudsim.core.entity import SimEntity
 from cloudsim.core.event import Event
-from cloudsim.core.constants import EventType, CloudletState
 from cloudsim.datacenters.characteristics import DatacenterCharacteristics
 
 if TYPE_CHECKING:
+    from cloudsim.cloudlets.cloudlet import Cloudlet
     from cloudsim.hosts.host import Host
     from cloudsim.vms.vm import VM
-    from cloudsim.cloudlets.cloudlet import Cloudlet
 
 logger = logging.getLogger(__name__)
 
@@ -35,20 +35,20 @@ class Datacenter(SimEntity):
     def __init__(
         self,
         name: str,
-        hosts: List["Host"],
-        characteristics: Optional[DatacenterCharacteristics] = None,
+        hosts: list[Host],
+        characteristics: DatacenterCharacteristics | None = None,
         scheduling_interval: float = 0.1,
     ) -> None:
         super().__init__(name)
-        self.hosts: List["Host"] = hosts
+        self.hosts: list[Host] = hosts
         self.characteristics: DatacenterCharacteristics = (
             characteristics or DatacenterCharacteristics()
         )
         self.scheduling_interval: float = scheduling_interval
-        self._vm_table: Dict[int, "VM"] = {}
-        self._cloudlet_table: Dict[int, "Cloudlet"] = {}
-        self._vm_queues: Dict[int, Deque["Cloudlet"]] = {}
-        self._vm_busy: Dict[int, bool] = {}
+        self._vm_table: dict[int, VM] = {}
+        self._cloudlet_table: dict[int, Cloudlet] = {}
+        self._vm_queues: dict[int, deque[Cloudlet]] = {}
+        self._vm_busy: dict[int, bool] = {}
 
     def process_event(self, event: Event) -> None:
         handlers = {
@@ -63,7 +63,7 @@ class Datacenter(SimEntity):
             logger.debug("%s ignoring unknown event %r", self.name, event)
 
     def _handle_vm_create(self, event: Event) -> None:
-        vm: "VM" = event.data
+        vm: VM = event.data
         allocated = False
         for host in self.hosts:
             if host.is_suitable_for_vm(vm):
@@ -75,14 +75,17 @@ class Datacenter(SimEntity):
                     allocated = True
                     logger.info(
                         "[%s] VM %d allocated on Host %d",
-                        self.name, vm.vm_id, host.host_id,
+                        self.name,
+                        vm.vm_id,
+                        host.host_id,
                     )
                     break
 
         if not allocated:
             logger.warning(
                 "[%s] Could not allocate VM %d – insufficient resources.",
-                self.name, vm.vm_id,
+                self.name,
+                vm.vm_id,
             )
 
         if self._simulation and event.source:
@@ -97,13 +100,15 @@ class Datacenter(SimEntity):
             )
 
     def _handle_cloudlet_submit(self, event: Event) -> None:
-        cloudlet: "Cloudlet" = event.data
+        cloudlet: Cloudlet = event.data
         vm = self._vm_table.get(cloudlet.assigned_vm_id)
 
         if vm is None:
             logger.error(
                 "[%s] Cloudlet %d references unknown VM %d",
-                self.name, cloudlet.cloudlet_id, cloudlet.assigned_vm_id,
+                self.name,
+                cloudlet.cloudlet_id,
+                cloudlet.assigned_vm_id,
             )
             return
 
@@ -116,7 +121,9 @@ class Datacenter(SimEntity):
             self._vm_queues[vm.vm_id].append(cloudlet)
             logger.info(
                 "[%s] Cloudlet %d queued on VM %d (queue size=%d)",
-                self.name, cloudlet.cloudlet_id, vm.vm_id,
+                self.name,
+                cloudlet.cloudlet_id,
+                vm.vm_id,
                 len(self._vm_queues[vm.vm_id]),
             )
             return
@@ -125,8 +132,8 @@ class Datacenter(SimEntity):
 
     def _start_cloudlet(
         self,
-        cloudlet: "Cloudlet",
-        vm: "VM",
+        cloudlet: Cloudlet,
+        vm: VM,
         broker: SimEntity,
     ) -> None:
         assert self._simulation is not None
@@ -164,7 +171,7 @@ class Datacenter(SimEntity):
             )
         )
 
-    def on_cloudlet_finished(self, cloudlet: "Cloudlet", broker: SimEntity) -> None:
+    def on_cloudlet_finished(self, cloudlet: Cloudlet, broker: SimEntity) -> None:
         """Release VM resources and start the next queued cloudlet, if any."""
         vm = self._vm_table.get(cloudlet.assigned_vm_id)
         if vm is None:
@@ -189,7 +196,7 @@ class Datacenter(SimEntity):
             if isinstance(host, PowerHost):
                 power = host.current_power()
             else:
-                power = 200.0
+                power = host.current_power() if isinstance(host, PowerHost) else 200.0
             total_joules += power * duration
         return total_joules / 3600.0
 

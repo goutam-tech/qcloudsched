@@ -6,17 +6,18 @@ panels, and formatted metric tables for terminal display.
 """
 
 from __future__ import annotations
-from typing import List, TYPE_CHECKING
 
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
+from typing import TYPE_CHECKING
+
 from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+from rich.table import Table
 
 if TYPE_CHECKING:
-    from cloudsim.metrics.metrics import SimulationMetrics
     from cloudsim.cloudlets.cloudlet import Cloudlet
+    from cloudsim.metrics.metrics import SimulationMetrics
 
 console = Console()
 
@@ -57,7 +58,7 @@ def print_banner(title: str = "PyCloudSim") -> None:
     )
 
 
-def print_metrics_table(metrics: "SimulationMetrics") -> None:
+def print_metrics_table(metrics: SimulationMetrics) -> None:
     """
     Render a Rich table summarising all simulation metrics.
 
@@ -85,7 +86,12 @@ def print_metrics_table(metrics: "SimulationMetrics") -> None:
         ("Avg CPU Utilization", f"{metrics.avg_cpu_utilization * 100:.2f}%"),
         ("Total Energy (Wh)", f"{metrics.total_energy_wh:.4f}"),
         ("Total Cost ($)", f"{metrics.total_cost:.4f}"),
-        ("SLA Violations", f"[red]{metrics.sla_violations}[/red]" if metrics.sla_violations else "[green]0[/green]"),
+        (
+            "SLA Violations",
+            f"[red]{metrics.sla_violations}[/red]"
+            if metrics.sla_violations
+            else "[green]0[/green]",
+        ),
         ("Load Balance Index", f"{metrics.load_balance_index:.4f}"),
     ]
 
@@ -95,7 +101,7 @@ def print_metrics_table(metrics: "SimulationMetrics") -> None:
     console.print(table)
 
 
-def print_cloudlet_table(cloudlets: List["Cloudlet"], max_rows: int = 25) -> None:
+def print_cloudlet_table(cloudlets: list[Cloudlet], max_rows: int = 25) -> None:
     """
     Render a Rich table of per-cloudlet results.
 
@@ -112,7 +118,16 @@ def print_cloudlet_table(cloudlets: List["Cloudlet"], max_rows: int = 25) -> Non
         header_style="bold blue",
         show_lines=False,
     )
-    for col in ["ID", "VM", "State", "Length (MI)", "Start (s)", "Finish (s)", "Exec (s)", "Wait (s)"]:
+    for col in [
+        "ID",
+        "VM",
+        "State",
+        "Length (MI)",
+        "Start (s)",
+        "Finish (s)",
+        "Exec (s)",
+        "Wait (s)",
+    ]:
         table.add_column(col, justify="right" if col not in ("State",) else "center")
 
     shown = cloudlets[:max_rows]
@@ -136,7 +151,13 @@ def print_cloudlet_table(cloudlets: List["Cloudlet"], max_rows: int = 25) -> Non
     if len(cloudlets) > max_rows:
         table.add_row(
             f"[dim]... and {len(cloudlets) - max_rows} more[/dim]",
-            "", "", "", "", "", "", "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
         )
 
     console.print(table)
@@ -160,16 +181,15 @@ def make_progress() -> Progress:
 
 
 def print_validation_checks(
-    metrics: "SimulationMetrics",
-    cloudlets: List["Cloudlet"],
-    vms: List | None = None,
+    metrics: SimulationMetrics,
+    cloudlets: list[Cloudlet],
+    vms: list | None = None,
 ) -> None:
     """
     Render Rich-formatted validation checks, matching the image theme.
 
     Shows cloudlet completion, per-VM CPU utilisation, SLA violations, etc.
     """
-    from cloudsim.core.constants import CloudletState
 
     console.print()
     console.print(Panel("[bold]Validation Checks[/bold]", border_style="blue"))
@@ -177,9 +197,7 @@ def print_validation_checks(
     # Overall completion
     all_completed = metrics.completed_cloudlets == metrics.total_cloudlets
     status = "[green]OK[/green]" if all_completed else "[red]FAIL[/red]"
-    console.print(
-        f"[{status}] All {metrics.total_cloudlets} cloudlets completed [{status}]"
-    )
+    console.print(f"[{status}] All {metrics.total_cloudlets} cloudlets completed [{status}]")
 
     # Per-VM CPU utilisation (if VMs provided)
     if vms:
@@ -202,9 +220,9 @@ def print_validation_checks(
 
 
 def print_simulation_summary(
-    metrics: "SimulationMetrics",
-    cloudlets: List["Cloudlet"],
-    vms: List | None = None,
+    metrics: SimulationMetrics,
+    cloudlets: list[Cloudlet],
+    vms: list | None = None,
     wall_time: float | None = None,
     sim_time: float | None = None,
     events: int | None = None,
@@ -257,4 +275,3 @@ __all__ = [
     "print_validation_checks",
     "print_simulation_summary",
 ]
-
