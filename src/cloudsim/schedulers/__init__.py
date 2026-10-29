@@ -1,4 +1,4 @@
-"""PyCloudSim Schedulers Package."""
+"""QCloudSched Schedulers Package."""
 
 from cloudsim.schedulers.schedulers import (
     CloudletScheduler,

@@ -1,5 +1,5 @@
 """
-PyCloudSim Utilization Metrics Collector.
+QCloudSched Utilization Metrics Collector.
 
 Stores VM and Host utilization snapshots throughout the simulation.
 """

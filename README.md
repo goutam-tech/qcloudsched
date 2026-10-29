@@ -1,8 +1,8 @@
-# PyCloudSim
+# QCloudSched
 
 A Python-native cloud computing simulation framework inspired by Java CloudSim.
 
-PyCloudSim provides a discrete-event simulation environment for modelling and
+QCloudSched provides a discrete-event simulation environment for modelling and
 evaluating cloud infrastructures, resource allocation strategies, scheduling
 algorithms, energy-aware policies, and virtual machine management.
 
@@ -35,8 +35,8 @@ algorithms, energy-aware policies, and virtual machine management.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/goutam-tech/pycloudsim.git
-cd pycloudsim
+git clone https://github.com/goutam-tech/qcloudsched.git
+cd qcloudsched
 
 # 2. Create and activate a virtual environment
 python -m venv .venv
@@ -87,15 +87,15 @@ print_simulation_summary(
 Or use the command line:
 
 ```bash
-pycloudsim info
-pycloudsim version
+qcloudsched info
+qcloudsched version
 ```
 
 ---
 
 ## Themed Output
 
-PyCloudSim includes a built-in Rich-powered logger so every simulation run
+QCloudSched includes a built-in Rich-powered logger so every simulation run
 produces professional, colour-coded terminal output:
 
 ```python
@@ -123,7 +123,7 @@ per-VM CPU utilisation, SLA violations), and a cloudlet execution table.
 ## Project Structure
 
 ```
-pycloudsim/
+qcloudsched/
 ├── src/
 │   └── cloudsim/                 # Library package (everything lives here)
 │       ├── __init__.py           # Public API exports

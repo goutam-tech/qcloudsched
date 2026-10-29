@@ -1,1 +1,1 @@
-"""Command-line interface for PyCloudSim."""
+"""Command-line interface for QCloudSched."""

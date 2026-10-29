@@ -1,4 +1,4 @@
-"""PyCloudSim Metrics Package."""
+"""QCloudSched Metrics Package."""
 
 from cloudsim.metrics.metrics import MetricsCollector, SimulationMetrics
 

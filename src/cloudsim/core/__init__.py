@@ -1,4 +1,4 @@
-"""PyCloudSim Core Package."""
+"""QCloudSched Core Package."""
 
 from cloudsim.core.clock import SimulationClock
 from cloudsim.core.constants import CloudletState, EventType, VMState

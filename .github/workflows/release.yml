@@ -1,8 +1,8 @@
-name: PyCloudSim Release
+name: QCloudSched Release
 
 on:
   workflow_run:
-    workflows: ["PyCloudSim CI"]
+    workflows: ["QCloudSched CI"]
     types: [completed]
     branches: [master]
 
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  PACKAGE_NAME: pycloudsim
+  PACKAGE_NAME: qcloudsched
 
 jobs:
   details:
@@ -155,7 +155,7 @@ jobs:
 
     environment:
       name: pypi
-      url: https://pypi.org/project/pycloudsim/
+      url: https://pypi.org/project/qcloudsched/
 
     steps:
       - name: Download distributions

@@ -1,4 +1,4 @@
-name: PyCloudSim CI
+name: qcloudsched CI
 
 on:
   push:

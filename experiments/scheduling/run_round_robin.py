@@ -71,7 +71,7 @@ plots_path = _path("PLOTS_PATH_RR_100")
 
 def run() -> None:
     """Execute the Round Robin scheduling experiment."""
-    print_banner("PyCloudSim — Round Robin Experiment")
+    print_banner("QCloudSched — Round Robin Experiment")
     console.print()
 
     with make_progress() as progress:

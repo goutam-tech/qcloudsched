@@ -1,5 +1,5 @@
 """
-PyCloudSim Datacenter Characteristics Module.
+QCloudSched Datacenter Characteristics Module.
 
 Holds the pricing and SLA characteristics of a Datacenter.
 """

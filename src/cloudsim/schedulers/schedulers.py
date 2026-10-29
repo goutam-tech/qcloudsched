@@ -1,5 +1,5 @@
 """
-PyCloudSim Schedulers Module.
+QCloudSched Schedulers Module.
 
 Defines abstract base schedulers and built-in Time-Shared and Space-Shared
 scheduling policies for Cloudlets and VMs.

@@ -1,5 +1,5 @@
 """
-PyCloudSim Logger Utility.
+QCloudSched Logger Utility.
 
 Provides a Rich-powered console logger with colored output, progress bars,
 panels, and formatted metric tables for terminal display.
@@ -47,7 +47,7 @@ def metric(message: str) -> None:
     console.print(f"[cyan][METRIC] {message}[/cyan]")
 
 
-def print_banner(title: str = "PyCloudSim") -> None:
+def print_banner(title: str = "QCloudSched") -> None:
     """Display a styled banner panel."""
     console.print(
         Panel.fit(
@@ -242,7 +242,7 @@ def print_simulation_summary(
         sim_time:    Optional simulated end time (s).
         events:      Optional number of events processed.
     """
-    print_banner("PyCloudSim — Simulation Results")
+    print_banner("QCloudSched — Simulation Results")
 
     if wall_time is not None:
         info(f"Simulation completed in {wall_time:.3f}s")

@@ -14,7 +14,7 @@ from cloudsim.vms.vm_loader import VMLoader
 
 
 class CloudSimulation:
-    """High-level interface for running a PyCloudSim simulation."""
+    """High-level interface for running a QCloudSched simulation."""
 
     def __init__(
         self,

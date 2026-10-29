@@ -72,7 +72,7 @@ plots_path = _path("PLOTS_PATH_QAOA_100")
 
 def run() -> None:
     """Execute the QAOA-based scheduling experiment."""
-    print_banner("PyCloudSim — QAOA Experiment")
+    print_banner("QCloudSched — QAOA Experiment")
     console.print()
 
     with make_progress() as progress:

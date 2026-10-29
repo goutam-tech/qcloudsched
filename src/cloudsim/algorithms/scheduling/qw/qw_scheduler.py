@@ -1,5 +1,5 @@
 """
-Quantum Walk Based Cloudlet Scheduler for PyCloudSim.
+Quantum Walk Based Cloudlet Scheduler for QCloudSched.
 
 Implements a cloudlet scheduler that maps cloudlets to VMs using a
 discrete-time Quantum Walk on the hypercube graph, via Qiskit.

@@ -1,5 +1,5 @@
 """
-PyCloudSim — Python-native Cloud Computing Simulation Framework.
+QCloudSched — Python-native Cloud Computing Simulation Framework.
 
 A discrete-event simulation framework inspired by Java CloudSim, providing
 modern Python architecture for cloud infrastructure research.

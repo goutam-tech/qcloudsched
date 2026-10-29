@@ -1,4 +1,4 @@
-"""PyCloudSim Utils Package."""
+"""QCloudSched Utils Package."""
 
 from cloudsim.utils.logger import (
     console,

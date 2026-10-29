@@ -1,5 +1,5 @@
 """
-PyCloudSim Event Queue Module.
+QCloudSched Event Queue Module.
 
 Implements a priority queue for simulation events using Python's heapq.
 """

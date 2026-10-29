@@ -1,4 +1,4 @@
-"""PyCloudSim Provisioners Package."""
+"""QCloudSched Provisioners Package."""
 
 from cloudsim.provisioners.provisioners import (
     BWProvisioner,

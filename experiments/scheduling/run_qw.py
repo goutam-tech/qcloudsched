@@ -71,7 +71,7 @@ plots_path = _path("PLOTS_PATH_QW")
 
 def run() -> None:
     """Execute the Quantum Walk-based scheduling experiment."""
-    print_banner("PyCloudSim — Quantum Walk Experiment")
+    print_banner("QCloudSched — Quantum Walk Experiment")
     console.print()
 
     with make_progress() as progress:

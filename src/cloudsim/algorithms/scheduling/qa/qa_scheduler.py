@@ -1,5 +1,5 @@
 """
-Quantum Annealing Based Cloudlet Scheduler for PyCloudSim.
+Quantum Annealing Based Cloudlet Scheduler for QCloudSched.
 
 Implements a cloudlet scheduler that maps cloudlets to VMs using a
 variational quantum annealing approach with Trotterized Pauli evolution,

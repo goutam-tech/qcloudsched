@@ -1,5 +1,5 @@
 """
-PyCloudSim Network Module.
+QCloudSched Network Module.
 
 Placeholder for future network topology simulation.
 Network links between datacenters and hosts will be modelled here in

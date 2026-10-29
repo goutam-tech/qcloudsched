@@ -1,5 +1,5 @@
 """
-QAOA Based Cloudlet Scheduler for PyCloudSim.
+QAOA Based Cloudlet Scheduler for QCloudSched.
 
 Implements a cloudlet scheduler that maps cloudlets to VMs using the
 Quantum Approximate Optimization Algorithm (QAOA) via Qiskit.

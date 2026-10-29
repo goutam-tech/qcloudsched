@@ -1,5 +1,5 @@
 """
-PyCloudSim Host Module.
+QCloudSched Host Module.
 
 Defines Host and PowerHost with runtime utilization tracking.
 """

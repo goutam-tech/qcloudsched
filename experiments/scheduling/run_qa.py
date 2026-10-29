@@ -70,7 +70,7 @@ plots_path = _path("PLOTS_PATH_QA")
 
 def run() -> None:
     """Execute the Quantum Annealing-based scheduling experiment."""
-    print_banner("PyCloudSim — Quantum Annealing Experiment")
+    print_banner("QCloudSched — Quantum Annealing Experiment")
     console.print()
 
     with make_progress() as progress:

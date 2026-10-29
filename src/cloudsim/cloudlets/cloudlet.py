@@ -1,5 +1,5 @@
 """
-PyCloudSim Cloudlet Module.
+QCloudSched Cloudlet Module.
 
 Represents a user task submitted to the cloud for execution.
 """

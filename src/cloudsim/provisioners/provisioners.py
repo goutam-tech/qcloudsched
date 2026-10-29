@@ -1,5 +1,5 @@
 """
-PyCloudSim Provisioners Module.
+QCloudSched Provisioners Module.
 
 Implements CPU, RAM, and Bandwidth provisioners that manage resource
 allocation on a Host for VMs.

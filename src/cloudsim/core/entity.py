@@ -1,5 +1,5 @@
 """
-PyCloudSim Entity Module.
+QCloudSched Entity Module.
 
 Defines the abstract base class for all simulation entities.
 """

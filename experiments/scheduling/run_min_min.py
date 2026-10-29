@@ -70,7 +70,7 @@ plots_path = _path("PLOTS_PATH_MIN_MIN_100")
 
 def run() -> None:
     """Execute the Min-Min scheduling experiment."""
-    print_banner("PyCloudSim — Min-Min Experiment")
+    print_banner("QCloudSched — Min-Min Experiment")
     console.print()
 
     with make_progress() as progress:

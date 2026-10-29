@@ -1,4 +1,4 @@
-"""PyCloudSim Cloudlets Package."""
+"""QCloudSched Cloudlets Package."""
 
 from cloudsim.cloudlets.cloudlet import Cloudlet
 from cloudsim.cloudlets.task_loader import TaskLoader

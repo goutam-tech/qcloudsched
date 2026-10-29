@@ -1,5 +1,5 @@
 """
-PyCloudSim Datacenter Module.
+QCloudSched Datacenter Module.
 
 Implements the Datacenter SimEntity that manages Hosts, allocates VMs,
 and executes Cloudlets on behalf of a Broker.

@@ -1,4 +1,4 @@
-"""PyCloudSim Scheduling Algorithms Package.
+"""QCloudSched Scheduling Algorithms Package.
 
 Re-exports every built-in cloudlet scheduler so they can be imported
 conveniently from ``cloudsim.algorithms.scheduling``.

@@ -1,4 +1,4 @@
-"""PyCloudSim command-line interface."""
+"""QCloudSched command-line interface."""
 
 from __future__ import annotations
 
@@ -9,10 +9,10 @@ from cloudsim import __version__
 
 
 def create_parser() -> argparse.ArgumentParser:
-    """Create the PyCloudSim command-line argument parser."""
+    """Create the QCloudSched command-line argument parser."""
     parser = argparse.ArgumentParser(
-        prog="pycloudsim",
-        description=("PyCloudSim - A Python-native cloud computing simulation framework."),
+        prog="QCloudSched",
+        description=("QCloudSched - A Python-native cloud computing simulation framework."),
     )
 
     parser.add_argument(
@@ -31,7 +31,7 @@ def create_parser() -> argparse.ArgumentParser:
     # ------------------------------------------------------------------
     info_parser = subparsers.add_parser(
         "info",
-        help="Display information about PyCloudSim.",
+        help="Display information about QCloudSched.",
     )
     info_parser.set_defaults(func=cmd_info)
 
@@ -40,7 +40,7 @@ def create_parser() -> argparse.ArgumentParser:
     # ------------------------------------------------------------------
     version_parser = subparsers.add_parser(
         "version",
-        help="Display the PyCloudSim version.",
+        help="Display the QCloudSched version.",
     )
     version_parser.set_defaults(func=cmd_version)
 
@@ -48,9 +48,9 @@ def create_parser() -> argparse.ArgumentParser:
 
 
 def cmd_info(_args: argparse.Namespace) -> int:
-    """Display PyCloudSim information."""
+    """Display QCloudSched information."""
     print()
-    print("PyCloudSim")
+    print("QCloudSched")
     print("=" * 40)
     print("Python-native cloud computing simulation framework")
     print()
@@ -66,13 +66,13 @@ def cmd_info(_args: argparse.Namespace) -> int:
 
 
 def cmd_version(_args: argparse.Namespace) -> int:
-    """Display the installed PyCloudSim version."""
+    """Display the installed QCloudSched version."""
     print(__version__)
     return 0
 
 
 def main() -> int:
-    """Run the PyCloudSim command-line interface."""
+    """Run the QCloudSched command-line interface."""
     parser = create_parser()
     args = parser.parse_args()
 

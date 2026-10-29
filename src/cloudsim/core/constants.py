@@ -1,5 +1,5 @@
 """
-PyCloudSim Constants Module.
+QCloudSched Constants Module.
 
 Defines global constants used across the simulation framework.
 """

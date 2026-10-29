@@ -1,4 +1,4 @@
-"""PyCloudSim Datacenters Package."""
+"""QCloudSched Datacenters Package."""
 
 from cloudsim.datacenters.broker import DatacenterBroker
 from cloudsim.datacenters.characteristics import DatacenterCharacteristics

@@ -1,4 +1,4 @@
-"""PyCloudSim VMs Package."""
+"""QCloudSched VMs Package."""
 
 from cloudsim.vms.vm import VM
 

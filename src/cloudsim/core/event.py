@@ -1,5 +1,5 @@
 """
-PyCloudSim Event Module.
+QCloudSched Event Module.
 
 Defines the Event dataclass used in discrete-event simulation.
 """

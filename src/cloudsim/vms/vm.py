@@ -1,5 +1,5 @@
 """
-PyCloudSim Virtual Machine Module.
+QCloudSched Virtual Machine Module.
 """
 
 from __future__ import annotations

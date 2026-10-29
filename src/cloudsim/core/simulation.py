@@ -1,5 +1,5 @@
 """
-PyCloudSim Simulation Engine.
+QCloudSched Simulation Engine.
 
 Orchestrates the discrete-event simulation loop and drives the global clock.
 """

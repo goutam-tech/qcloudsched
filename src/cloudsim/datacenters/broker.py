@@ -1,5 +1,5 @@
 """
-PyCloudSim Broker Module.
+QCloudSched Broker Module.
 
 Implements the DatacenterBroker SimEntity that submits VMs and Cloudlets
 to Datacenters on behalf of users and collects results.

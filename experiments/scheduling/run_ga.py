@@ -71,7 +71,7 @@ plots_path = _path("PLOTS_PATH_GA_100")
 
 def run() -> None:
     """Execute the Genetic Algorithm scheduling experiment."""
-    print_banner("PyCloudSim — Genetic Algorithm Experiment")
+    print_banner("QCloudSched — Genetic Algorithm Experiment")
     console.print()
 
     with make_progress() as progress:

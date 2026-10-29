@@ -1,4 +1,4 @@
-"""PyCloudSim Algorithms Package."""
+"""QCloudSched Algorithms Package."""
 
 from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
 

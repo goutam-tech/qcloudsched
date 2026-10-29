@@ -1,5 +1,5 @@
 """
-PyCloudSim Clock Module.
+QCloudSched Clock Module.
 
 Maintains the global simulation clock for discrete-event simulation.
 """

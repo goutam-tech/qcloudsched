@@ -1,5 +1,5 @@
 """
-PyCloudSim Metrics Module.
+QCloudSched Metrics Module.
 
 Collects, computes, and exports simulation metrics including makespan,
 throughput, utilization, energy, cost, and SLA violations.

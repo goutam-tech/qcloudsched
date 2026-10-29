@@ -1,4 +1,4 @@
-"""PyCloudSim Hosts Package."""
+"""QCloudSched Hosts Package."""
 
 from cloudsim.hosts.host import Host, PowerHost
 
