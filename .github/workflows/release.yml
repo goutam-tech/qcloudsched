@@ -2,15 +2,15 @@ name: USEL Release
 
 on:
   workflow_run:
-    workflows: ["USEL CI"]
+    workflows: ["PyCloudSim"]
     types: [completed]
-    branches: [main]
+    branches: [master]
 
 permissions:
   contents: read
 
 env:
-  PACKAGE_NAME: usel
+  PACKAGE_NAME: pycloudsim
 
 jobs:
   details:
@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Read and validate version
         id: release
@@ -106,7 +106,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Install uv
         uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
@@ -115,7 +115,7 @@ jobs:
         run: uv lock --check
 
       - name: Install dependencies
-        run: uv sync --locked --group dev
+        run: uv sync --locked --extra dev
 
       - name: Test version consistency
         run: uv run pytest tests/src/utils/test_versioning.py -v
