@@ -14,7 +14,8 @@ readme = "README.md"
 requires-python = ">=3.10"
 
 authors = [
-    { name = "Goutam Parashuram Gotur", email = "goutamgotur2006@outlook.com"}
+    { name = "Goutam Parashuram Gotur", email = "goutamgotur2006@outlook.com"},
+    { name = "Dr. E Saravana Kumar", email = "sarainfo@gmail.com"}
 ]
 
 license = { text = "MIT" }

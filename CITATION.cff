@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use PyCloudSim in academic work, please cite this software."
+title: "PyCloudSim: A Python-native Cloud Computing Simulation Framework"
+authors:
+  - name: "Goutam Parashuram Gotur"
+  - name: "Dr. E Saravana Kumar"
+type: software
+repository-code: "https://github.com/goutam-tech/pycloudsim"
+license: MIT
