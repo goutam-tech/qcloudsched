@@ -1,4 +1,4 @@
-name: USEL CI
+name: PyCloudSim CI
 
 on:
   push:

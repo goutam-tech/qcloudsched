@@ -93,6 +93,9 @@ class DatacenterBroker(SimEntity):
                     )
                 )
 
+    def shutdown_entity(self) -> None:
+        """Finalize broker state when the simulation ends."""
+
     # ------------------------------------------------------------------
     # Event handling
     # ------------------------------------------------------------------

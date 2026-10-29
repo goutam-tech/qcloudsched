@@ -50,6 +50,12 @@ class Datacenter(SimEntity):
         self._vm_queues: dict[int, deque[Cloudlet]] = {}
         self._vm_busy: dict[int, bool] = {}
 
+    def start_entity(self) -> None:
+        """Initialize the datacenter when the simulation starts."""
+
+    def shutdown_entity(self) -> None:
+        """Release datacenter resources when the simulation ends."""
+
     def process_event(self, event: Event) -> None:
         handlers = {
             EventType.VM_CREATE: self._handle_vm_create,
