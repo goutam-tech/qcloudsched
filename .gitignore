@@ -9,7 +9,6 @@ wheels/
 # Virtual environments
 .venv
 .python-version
-uv.lock
 plan.md
 .cursor
 .pytest_cache/

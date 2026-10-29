@@ -1,10 +1,10 @@
 """PyCloudSim Provisioners Package."""
 
 from cloudsim.provisioners.provisioners import (
-    ResourceProvisioner,
+    BWProvisioner,
     CPUProvisioner,
     RAMProvisioner,
-    BWProvisioner,
+    ResourceProvisioner,
 )
 
 __all__ = ["ResourceProvisioner", "CPUProvisioner", "RAMProvisioner", "BWProvisioner"]

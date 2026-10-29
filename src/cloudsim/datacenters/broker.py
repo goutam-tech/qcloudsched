@@ -6,17 +6,18 @@ to Datacenters on behalf of users and collects results.
 """
 
 from __future__ import annotations
-import logging
-from typing import List, Dict, Optional, TYPE_CHECKING
 
+import logging
+from typing import TYPE_CHECKING
+
+from cloudsim.core.constants import CloudletState, EventType, VMState
 from cloudsim.core.entity import SimEntity
 from cloudsim.core.event import Event
-from cloudsim.core.constants import EventType, CloudletState, VMState
 
 if TYPE_CHECKING:
-    from cloudsim.vms.vm import VM
     from cloudsim.cloudlets.cloudlet import Cloudlet
     from cloudsim.datacenters.datacenter import Datacenter
+    from cloudsim.vms.vm import VM
 
 logger = logging.getLogger(__name__)
 
@@ -37,11 +38,11 @@ class DatacenterBroker(SimEntity):
     def __init__(self, name: str, scheduler) -> None:
         super().__init__(name)
         self.scheduler = scheduler
-        self._datacenters: List["Datacenter"] = []
-        self._vms: List["VM"] = []
-        self._cloudlets: List["Cloudlet"] = []
-        self._completed_cloudlets: List["Cloudlet"] = []
-        self._vm_datacenter_map: Dict[int, "Datacenter"] = {}
+        self._datacenters: list[Datacenter] = []
+        self._vms: list[VM] = []
+        self._cloudlets: list[Cloudlet] = []
+        self._completed_cloudlets: list[Cloudlet] = []
+        self._vm_datacenter_map: dict[int, Datacenter] = {}
         self._vms_created: int = 0
         self._vms_requested: int = 0
 
@@ -49,20 +50,20 @@ class DatacenterBroker(SimEntity):
     # User-facing API
     # ------------------------------------------------------------------
 
-    def add_datacenter(self, datacenter: "Datacenter") -> None:
+    def add_datacenter(self, datacenter: Datacenter) -> None:
         """Register a datacenter with this broker."""
         self._datacenters.append(datacenter)
 
-    def submit_vm_list(self, vms: List["VM"]) -> None:
+    def submit_vm_list(self, vms: list[VM]) -> None:
         """Register VMs to be created when the simulation starts."""
         self._vms.extend(vms)
 
-    def submit_cloudlet_list(self, cloudlets: List["Cloudlet"]) -> None:
+    def submit_cloudlet_list(self, cloudlets: list[Cloudlet]) -> None:
         """Register cloudlets to be executed after VMs are ready."""
         self._cloudlets.extend(cloudlets)
 
     @property
-    def completed_cloudlets(self) -> List["Cloudlet"]:
+    def completed_cloudlets(self) -> list[Cloudlet]:
         """Cloudlets that have finished execution."""
         return self._completed_cloudlets
 
@@ -92,6 +93,9 @@ class DatacenterBroker(SimEntity):
                     )
                 )
 
+    def shutdown_entity(self) -> None:
+        """Finalize broker state when the simulation ends."""
+
     # ------------------------------------------------------------------
     # Event handling
     # ------------------------------------------------------------------
@@ -118,7 +122,10 @@ class DatacenterBroker(SimEntity):
             self._vms_created += 1
             logger.info(
                 "[%s] VM %d created (%d/%d).",
-                self.name, vm.vm_id, self._vms_created, self._vms_requested,
+                self.name,
+                vm.vm_id,
+                self._vms_created,
+                self._vms_requested,
             )
         else:
             logger.warning("[%s] VM %d creation FAILED.", self.name, vm.vm_id)
@@ -140,9 +147,7 @@ class DatacenterBroker(SimEntity):
 
             dc = self._vm_datacenter_map.get(cloudlet.assigned_vm_id)
             if dc is None:
-                logger.error(
-                    "[%s] No datacenter for VM %d.", self.name, cloudlet.assigned_vm_id
-                )
+                logger.error("[%s] No datacenter for VM %d.", self.name, cloudlet.assigned_vm_id)
                 continue
 
             assert self._simulation is not None
@@ -160,7 +165,7 @@ class DatacenterBroker(SimEntity):
 
     def _handle_cloudlet_complete(self, event: Event) -> None:
         """Mark a cloudlet as finished and dispatch the next queued cloudlet."""
-        cloudlet: "Cloudlet" = event.data
+        cloudlet: Cloudlet = event.data
         assert self._simulation is not None
         cloudlet.finish_time = self._simulation.clock.now()
         cloudlet.state = CloudletState.SUCCESS
@@ -182,6 +187,6 @@ class DatacenterBroker(SimEntity):
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _select_datacenter(self, vm: "VM") -> Optional["Datacenter"]:
+    def _select_datacenter(self, vm: VM) -> Datacenter | None:
         """Select the first available datacenter (simple policy)."""
         return self._datacenters[0] if self._datacenters else None

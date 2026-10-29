@@ -7,14 +7,14 @@ Defines Host and PowerHost with runtime utilization tracking.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
+from cloudsim.core.constants import VMState
 from cloudsim.provisioners.provisioners import (
+    BWProvisioner,
     CPUProvisioner,
     RAMProvisioner,
-    BWProvisioner,
 )
-from cloudsim.core.constants import VMState
 
 if TYPE_CHECKING:
     from cloudsim.vms.vm import VM
@@ -35,12 +35,12 @@ class Host:
     ram_provisioner: RAMProvisioner = field(default=None)
     bw_provisioner: BWProvisioner = field(default=None)
 
-    vms: List["VM"] = field(default_factory=list, init=False)
-    _power_samples: List[float] = field(default_factory=list, init=False, repr=False)
-    _cpu_samples: List[float] = field(default_factory=list, init=False, repr=False)
-    _ram_samples: List[float] = field(default_factory=list, init=False, repr=False)
-    _storage_samples: List[float] = field(default_factory=list, init=False, repr=False)
-    _bw_samples: List[float] = field(default_factory=list, init=False, repr=False)
+    vms: list[VM] = field(default_factory=list, init=False)
+    _power_samples: list[float] = field(default_factory=list, init=False, repr=False)
+    _cpu_samples: list[float] = field(default_factory=list, init=False, repr=False)
+    _ram_samples: list[float] = field(default_factory=list, init=False, repr=False)
+    _storage_samples: list[float] = field(default_factory=list, init=False, repr=False)
+    _bw_samples: list[float] = field(default_factory=list, init=False, repr=False)
 
     def __post_init__(self) -> None:
         if self.cpu_provisioner is None:
@@ -90,7 +90,7 @@ class Host:
     def cpu_utilization(self) -> float:
         return self.cpu_load
 
-    def is_suitable_for_vm(self, vm: "VM") -> bool:
+    def is_suitable_for_vm(self, vm: VM) -> bool:
         return (
             self.cpu_provisioner.is_suitable(vm.total_mips)
             and self.ram_provisioner.is_suitable(vm.ram)
@@ -98,7 +98,7 @@ class Host:
             and self.storage >= vm.storage
         )
 
-    def allocate_resources_for_vm(self, vm: "VM") -> bool:
+    def allocate_resources_for_vm(self, vm: VM) -> bool:
         if not self.is_suitable_for_vm(vm):
             return False
 
@@ -117,7 +117,7 @@ class Host:
         self.bw_provisioner.deallocate(vm.vm_id)
         return False
 
-    def deallocate_resources_for_vm(self, vm: "VM") -> None:
+    def deallocate_resources_for_vm(self, vm: VM) -> None:
         self.cpu_provisioner.deallocate(vm.vm_id)
         self.ram_provisioner.deallocate(vm.vm_id)
         self.bw_provisioner.deallocate(vm.vm_id)

@@ -7,7 +7,6 @@ Represents a user task submitted to the cloud for execution.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from cloudsim.core.constants import CloudletState
 
@@ -23,7 +22,7 @@ class Cloudlet:
     output_size: float = 300.0
     arrival_time: float = 0.0
     priority: int = 0
-    deadline: Optional[float] = None
+    deadline: float | None = None
 
     ram_required: int = 512
     storage_required: int = 100

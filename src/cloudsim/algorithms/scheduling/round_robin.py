@@ -7,12 +7,11 @@ sophisticated scheduling strategies.
 """
 
 from __future__ import annotations
-from typing import List, Optional
-
-from cloudsim.schedulers.schedulers import CloudletScheduler
-from cloudsim.core.constants import CloudletState
 
 from typing import TYPE_CHECKING
+
+from cloudsim.core.constants import CloudletState
+from cloudsim.schedulers.schedulers import CloudletScheduler
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -41,10 +40,10 @@ class RoundRobinScheduler(CloudletScheduler):
 
     def __init__(self) -> None:
         """Initialize the Round Robin scheduler."""
-        self._cloudlets: List["Cloudlet"] = []
+        self._cloudlets: list[Cloudlet] = []
         self._assignment_index: int = 0
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         """
         Assign each cloudlet to a VM using round robin ordering.
 
@@ -69,7 +68,7 @@ class RoundRobinScheduler(CloudletScheduler):
             self._cloudlets.append(cloudlet)
             self._assignment_index += 1
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         """Return the next queued or in-execution cloudlet."""
         for cl in self._cloudlets:
             if cl.state in (CloudletState.QUEUED, CloudletState.INEXEC):

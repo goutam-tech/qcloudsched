@@ -7,10 +7,11 @@ Sets up and retrieves optimization algorithms from qiskit_algorithms.optimizers.
 from __future__ import annotations
 
 from typing import Any
+
 from qiskit_algorithms.optimizers import (
     COBYLA,
-    SPSA,
     NELDER_MEAD,
+    SPSA,
     Optimizer,
 )
 

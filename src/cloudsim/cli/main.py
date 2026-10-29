@@ -12,10 +12,7 @@ def create_parser() -> argparse.ArgumentParser:
     """Create the PyCloudSim command-line argument parser."""
     parser = argparse.ArgumentParser(
         prog="pycloudsim",
-        description=(
-            "PyCloudSim - A Python-native cloud computing "
-            "simulation framework."
-        ),
+        description=("PyCloudSim - A Python-native cloud computing simulation framework."),
     )
 
     parser.add_argument(

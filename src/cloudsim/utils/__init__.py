@@ -2,15 +2,15 @@
 
 from cloudsim.utils.logger import (
     console,
-    info,
-    success,
-    warning,
     error,
+    info,
+    make_progress,
     metric,
     print_banner,
-    print_metrics_table,
     print_cloudlet_table,
-    make_progress,
+    print_metrics_table,
+    success,
+    warning,
 )
 
 __all__ = [

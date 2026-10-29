@@ -2,6 +2,4 @@
 
 from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
 
-__all__ = [
-    "RoundRobinScheduler"
-]
+__all__ = ["RoundRobinScheduler"]

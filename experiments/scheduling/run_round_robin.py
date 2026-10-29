@@ -5,12 +5,39 @@ Run with:
     python experiments/scheduling/run_round_robin.py
 """
 
+# ---------------------------------------------------------------------------
+# Imports
+# ---------------------------------------------------------------------------
+
 from __future__ import annotations
 
 import logging
 import os
 import sys
 import time
+
+from dotenv import load_dotenv
+from rich.panel import Panel
+
+from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
+from cloudsim.cloudlets.task_loader import TaskLoader
+from cloudsim.core.constants import DEFAULT_SCHEDULING_INTERVAL
+from cloudsim.core.simulation import Simulation
+from cloudsim.datacenters.broker import DatacenterBroker
+from cloudsim.datacenters.characteristics import DatacenterCharacteristics
+from cloudsim.datacenters.datacenter import Datacenter
+from cloudsim.hosts.host_loader import HostLoader
+from cloudsim.metrics.metrics import MetricsCollector
+from cloudsim.utils.logger import (
+    console,
+    info,
+    make_progress,
+    print_banner,
+    print_simulation_summary,
+    success,
+    warning,
+)
+from cloudsim.vms.vm_loader import VMLoader
 
 # ---------------------------------------------------------------------------
 # Ensure project root is on sys.path when run directly
@@ -22,7 +49,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 # ---------------------------------------------------------------------------
 logging.basicConfig(level=logging.WARNING)
 
-from dotenv import load_dotenv
 load_dotenv()
 
 
@@ -33,36 +59,6 @@ def _path(env_var: str, default: str) -> str:
         return val
     return default
 
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-from cloudsim.core.simulation import Simulation
-from cloudsim.core.constants import DEFAULT_SCHEDULING_INTERVAL
-from cloudsim.cloudlets.task_loader import TaskLoader
-from cloudsim.hosts.host_loader import HostLoader
-from cloudsim.vms.vm_loader import VMLoader
-
-from cloudsim.datacenters.datacenter import Datacenter
-from cloudsim.datacenters.broker import DatacenterBroker
-from cloudsim.datacenters.characteristics import DatacenterCharacteristics
-
-from cloudsim.metrics.metrics import MetricsCollector
-
-from cloudsim.utils.logger import (
-    console,
-    error,
-    info,
-    make_progress,
-    metric,
-    print_banner,
-    print_simulation_summary,
-    success,
-    warning,
-)
-from rich.panel import Panel
-
-from cloudsim.algorithms.scheduling.round_robin import RoundRobinScheduler
 
 project_root = os.getenv("PROJECT_ROOT")
 hosts_path = _path("HOSTS_PATH")

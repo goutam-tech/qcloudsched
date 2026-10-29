@@ -9,14 +9,13 @@ via Qiskit.
 from __future__ import annotations
 
 import logging
-from typing import List, Optional, TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any
 
-from cloudsim.schedulers.schedulers import CloudletScheduler
-from cloudsim.core.constants import CloudletState
-
-from cloudsim.algorithms.scheduling.qa.hamiltonian import build_hamiltonian
 from cloudsim.algorithms.scheduling.qa.decoder import decode_bitstring, repair_assignment
+from cloudsim.algorithms.scheduling.qa.hamiltonian import build_hamiltonian
 from cloudsim.algorithms.scheduling.qa.optimizer import get_optimizer
+from cloudsim.core.constants import CloudletState
+from cloudsim.schedulers.schedulers import CloudletScheduler
 
 if TYPE_CHECKING:
     from cloudsim.cloudlets.cloudlet import Cloudlet
@@ -75,13 +74,14 @@ class QuantumAnnealingScheduler(CloudletScheduler):
 
         if sampler is None:
             from qiskit.primitives import StatevectorSampler
+
             self.sampler = StatevectorSampler()
         else:
             self.sampler = sampler
 
-        self._cloudlets: List["Cloudlet"] = []
+        self._cloudlets: list[Cloudlet] = []
 
-    def submit_cloudlets(self, cloudlets: List["Cloudlet"], vms: List["VM"]) -> None:
+    def submit_cloudlets(self, cloudlets: list[Cloudlet], vms: list[VM]) -> None:
         """
         Optimize cloudlet assignment to VMs using Quantum Annealing.
 
@@ -118,6 +118,7 @@ class QuantumAnnealingScheduler(CloudletScheduler):
 
             # Build Quantum Annealing ansatz without measurement gates for VQE
             from qiskit_algorithms import SamplingVQE
+
             from cloudsim.algorithms.scheduling.qa.circuit import build_qa_circuit
 
             num_qubits = len(batch) * len(vms)
@@ -166,7 +167,7 @@ class QuantumAnnealingScheduler(CloudletScheduler):
                 cl.state = CloudletState.QUEUED
                 vm.cloudlets.append(cl)
 
-    def get_next_cloudlet(self) -> Optional["Cloudlet"]:
+    def get_next_cloudlet(self) -> Cloudlet | None:
         """Get the next queued or executing cloudlet."""
         for cl in self._cloudlets:
             if cl.state in (CloudletState.QUEUED, CloudletState.INEXEC):

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from cloudsim.cloudlets.task_loader import TaskLoader
 from cloudsim.core.constants import DEFAULT_SCHEDULING_INTERVAL
 from cloudsim.core.simulation import Simulation
-from cloudsim.cloudlets.task_loader import TaskLoader
 from cloudsim.datacenters.broker import DatacenterBroker
 from cloudsim.datacenters.characteristics import DatacenterCharacteristics
 from cloudsim.datacenters.datacenter import Datacenter
@@ -41,7 +41,7 @@ class CloudSimulation:
         cloudlets: str | Path,
         scheduler,
         characteristics: DatacenterCharacteristics | None = None,
-    ) -> "CloudSimulation":
+    ) -> CloudSimulation:
         """Create a simulation from JSON dataset files."""
 
         simulation = Simulation()

@@ -5,8 +5,9 @@ Defines the Event dataclass used in discrete-event simulation.
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 
 @dataclass(order=True)
@@ -28,9 +29,9 @@ class Event:
     time: float
     priority: int = field(default=0, compare=True)
     event_type: str = field(default="", compare=False)
-    source: Optional[Any] = field(default=None, compare=False)
-    destination: Optional[Any] = field(default=None, compare=False)
-    data: Optional[Any] = field(default=None, compare=False)
+    source: Any | None = field(default=None, compare=False)
+    destination: Any | None = field(default=None, compare=False)
+    data: Any | None = field(default=None, compare=False)
 
     def __repr__(self) -> str:
         return (

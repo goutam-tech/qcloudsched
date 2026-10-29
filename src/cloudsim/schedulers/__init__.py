@@ -2,9 +2,9 @@
 
 from cloudsim.schedulers.schedulers import (
     CloudletScheduler,
-    VMScheduler,
-    TimeSharedScheduler,
     SpaceSharedScheduler,
+    TimeSharedScheduler,
+    VMScheduler,
 )
 
 __all__ = [
